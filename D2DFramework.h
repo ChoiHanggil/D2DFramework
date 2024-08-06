@@ -3,6 +3,7 @@
 #include<wrl/client.h>
 #include<exception>
 #include<stdio.h>
+
 class com_exception : public std::exception
 {
 public:
@@ -28,13 +29,29 @@ inline void ThowIfFailed(HRESULT hr)
 
 class D2DFramework
 {
+public:
+	virtual HRESULT Init(HINSTANCE hInstacne, LPCWSTR title = L"D2DFramework", UINT width = 1024, UINT height = 768);
+	
+	virtual void Release();
+	virtual void Render();
+	virtual int GameLoop();
+
 protected:
 	Microsoft::WRL::ComPtr<ID2D1Factory> gpD2DFactory{};
 	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> gpRenderTarget{};
 
-public:
-	virtual HRESULT Init(HWND hwnd);
-	virtual void Release();
-	virtual void Render();
+	HRESULT InitWindow(HINSTANCE hInstacne, LPCWSTR title, UINT width, UINT height);
+	HRESULT InitD2D();
+
+	virtual HRESULT CreateDeviceResources();
+
+protected:
+	HWND mHwnd;
+	
+
+private:
+	//컴파일은 cpp에서만 가능 / 헤더에서는 안됨
+	const wchar_t* CLASS_NAME{ L"Direct2DSampleClass" };
 };
 
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
