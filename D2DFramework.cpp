@@ -16,19 +16,19 @@ HRESULT D2DFramework::Init(HINSTANCE hInstacne, LPCWSTR title, UINT width, UINT 
 
 void D2DFramework::Release()
 {
-	gpRenderTarget.Reset();
-	gpD2DFactory.Reset();
+	mpRenderTarget.Reset();
+	mpD2DFactory.Reset();
 }
 
 void D2DFramework::Render()
 {
 	// 3. 弊府扁
-	gpRenderTarget->BeginDraw();
+	mpRenderTarget->BeginDraw();
 
-	gpRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
+	mpRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
 
-	gpRenderTarget->EndDraw();
-	HRESULT hr = gpRenderTarget->EndDraw();
+	mpRenderTarget->EndDraw();
+	HRESULT hr = mpRenderTarget->EndDraw();
 	if (hr == D2DERR_RECREATE_TARGET)
 	{
 		CreateDeviceResources();
@@ -108,7 +108,7 @@ HRESULT D2DFramework::InitWindow(HINSTANCE hInstacne, LPCWSTR title, UINT width,
 HRESULT D2DFramework::InitD2D()
 {
 	// 1. Factory 积己
-	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, gpD2DFactory.GetAddressOf());
+	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mpD2DFactory.GetAddressOf());
 
 	// if(SUCCEEDED(hr))	//己傍
 	ThowIfFailed(hr);
@@ -128,10 +128,10 @@ HRESULT D2DFramework::CreateDeviceResources()
 	RECT wr;
 	GetClientRect(mHwnd, &wr);
 
-	HRESULT hr = gpD2DFactory->CreateHwndRenderTarget(
+	HRESULT hr = mpD2DFactory->CreateHwndRenderTarget(
 		D2D1::RenderTargetProperties(),
 		D2D1::HwndRenderTargetProperties(mHwnd, D2D1::SizeU(wr.right - wr.left, wr.bottom - wr.top)),
-		&gpRenderTarget);
+		&mpRenderTarget);
 
 	ThowIfFailed(hr);
 

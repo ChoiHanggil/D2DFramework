@@ -37,8 +37,8 @@ public:
 	virtual int GameLoop();
 
 protected:
-	Microsoft::WRL::ComPtr<ID2D1Factory> gpD2DFactory{};
-	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> gpRenderTarget{};
+	Microsoft::WRL::ComPtr<ID2D1Factory> mpD2DFactory{};
+	Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> mpRenderTarget{};
 
 	HRESULT InitWindow(HINSTANCE hInstacne, LPCWSTR title, UINT width, UINT height);
 	HRESULT InitD2D();
